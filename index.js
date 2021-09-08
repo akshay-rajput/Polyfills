@@ -4,7 +4,9 @@
 - callbackFn is invoked only for indexes of the array which have assigned values; it is not invoked for indexes which have been deleted or which have never been assigned values.
 - filter() does not mutate the array on which it is called.
  */
-
+Array.prototype.customFilter = function(callback){
+  
+}
 
 
 // forEach
@@ -27,7 +29,10 @@ Array.prototype.eachElm = function(callback) {
 Array.prototype.ourMap = function(callback) {
   var arr = [] // since, we need to return an array
   for (var i = 0; i < this.length; i++) {
-    arr.push(callback(this[i], i, this)) // pushing currentValue, index, array
+    arr.push(callback(this[i], i, this)) // call with currentValue, index, array
   }
   return arr; // finally returning the array
 }
+
+let arr = [1,3,4,6,7,8];
+console.log("Squares: ", arr.ourMap(item=> item * item));
