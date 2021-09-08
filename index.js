@@ -5,7 +5,21 @@
 - filter() does not mutate the array on which it is called.
  */
 Array.prototype.customFilter = function(callback){
-  
+  let filtered = [];
+  let arrLength = this.length;
+
+  // check if callback provided
+  if (typeof callback !== 'function') {
+    throw new TypeError("Custom filter requires a callback function");
+  }
+
+  for(let i=0; i<arrLength; i++){
+    if(callback(this[i], i, this)){
+      filtered.push(this[i]);
+    }
+  }
+
+  return filtered;
 }
 
 
@@ -35,4 +49,6 @@ Array.prototype.ourMap = function(callback) {
 }
 
 let arr = [1,3,4,6,7,8];
+console.log("OG array: ", arr + "\n");
 console.log("Squares: ", arr.ourMap(item=> item * item));
+console.log("only odds: ", arr.customFilter(item => item % 2 === 1));
