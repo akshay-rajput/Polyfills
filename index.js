@@ -96,16 +96,15 @@ Array.prototype.customReduce = function(reducerfunc, initialValue){
 
 let arr = [1,3,4,6,7,,8];
 
-console.log("OG array: ", arr + "\n");
-console.log("Map: Squares: ", arr.ourMap(item=> item * item));
-console.log("Filter: only odds: ", arr.customFilter(item => item % 2 === 1));
+// console.log("OG array: ", arr + "\n");
+// console.log("Map: Squares: ", arr.ourMap(item=> item * item));
+// console.log("Filter: only odds: ", arr.customFilter(item => item % 2 === 1));
 
-console.log("find 1st even: ", arr.customFind(item => item % 2 === 0));
+// console.log("find 1st even: ", arr.customFind(item => item % 2 === 0));
 
-let reducer = (acc, current) => acc+current;
+// let reducer = (acc, current) => acc+current;
 
-console.log("Reduce: sum: "+ arr.customReduce(reducer, 0));
-
+// console.log("Reduce: sum: "+ arr.customReduce(reducer, 0));
 
 // let arr2 = [1,2,3];
 // let reducer2 = (acc, current) => {
@@ -113,4 +112,40 @@ console.log("Reduce: sum: "+ arr.customReduce(reducer, 0));
 //   return acc + current**2;
 // }
 // arr2.customReduce(reducer2, 1);
-// arr.reduce(reducer, 1);
+
+// ---------- Other polyfills ------------
+
+/* BIND
+  - bind creates a new function, that when called has its THIS keyword set to the provided value.
+  - second argument in bind is list of params
+
+  - takes an object as argument and returns a function whose this refers to the object we passed
+*/
+// Function.prototype.customBind = function (context, ...args) {
+//   let fn = this;
+//   return function (...otherArgs) {
+//       fn.apply(context, [...args, ...otherArgs]);
+//   }
+// };
+
+let obj = {
+  "name": "jack",
+  age: 24
+}
+
+function greet(city, job){
+  console.log(`Hi my name is ${this.name}. I'm ${this.age} years old. I'm from ${city} and I work as a ${job}.`);
+}
+
+Function.prototype.mybind = function (...args) {
+  let fn = this;
+  let params = args.slice(1);
+  return function (...arg2) {
+      fn.apply(args[0], [...params, ...arg2])
+  }
+};
+
+// let callBinded = greet.bind(obj, 'jammu');
+let mycallBinded = greet.mybind(obj, "jammu");
+// callBinded('engineer');
+mycallBinded('police officer');
