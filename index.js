@@ -139,13 +139,74 @@ function greet(city, job){
 
 Function.prototype.mybind = function (...args) {
   let fn = this;
+  // 1st is the object, take rest of the parameters
   let params = args.slice(1);
   return function (...arg2) {
+      // apply the object and second parameter is array of all args
       fn.apply(args[0], [...params, ...arg2])
   }
 };
 
 // let callBinded = greet.bind(obj, 'jammu');
-let mycallBinded = greet.mybind(obj, "jammu");
+// let mycallBinded = greet.mybind(obj, "jammu");
 // callBinded('engineer');
-mycallBinded('police officer');
+// mycallBinded('police officer');
+
+// Promise.All()
+/*
+  - takes array of promises as input
+  - returns a single promise
+  - this promise resolves when all promises are resolved and returns an array with all results
+  - rejects when any promise rejects
+  - if non-promise passed, it is ignore but sent in result array.
+*/
+
+var p1 = Promise.resolve(3);
+var p2 = 1337;
+var p3 = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    resolve("foo");
+  }, 2000);
+});
+
+checkAllPromises = function(listOfPromises){
+  return new Promise((resolve, reject) => {
+    let countOfPromises = listOfPromises ? listOfPromises.length : 0;
+    let results = [];
+
+    // if array of promises not provided, just return
+    if(!countOfPromises){
+      resolve(listOfPromises);
+      return listOfPromises;
+    }
+
+    listOfPromises.forEach((singlePromise, index) => {
+      // check if it's a promise
+      if((singlePromise != null && typeof singlePromise.then === 'function')){
+        singlePromise.then(value => {
+          // add this resolved value to results array
+          results[index] = value;
+        })
+        .then(()=> {
+          // resolve after all promises have finished
+          if(results.length === countOfPromises){
+            resolve(results);
+          }
+        })
+        .catch((err) => reject("Promise rejected"));
+      }else{
+        results[index] = singlePromise; // just push that value in results
+      }
+    })
+  });
+}
+
+checkAllPromises([p1, p2, p3])
+.then((allResults) => console.log({allResults}))
+.catch(error => console.error({error}) );
+
+// Promise.all([p1, p2, p3])
+//  .then((result) => {
+//    console.log(result)
+//  })
+//  .catch(error => console.log(`Error in promises ${error}`))
