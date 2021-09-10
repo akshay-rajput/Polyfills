@@ -69,8 +69,7 @@ Array.prototype.customFind = function(testingFunc){
   - final result is a single value
 */
 Array.prototype.customReduce = function(reducerfunc, initialValue){
-  let currentValue = null;
-  let acc = 0;
+  let acc = null;
 
   // if array length less than 1
   if(this.length < 1){
@@ -86,8 +85,7 @@ Array.prototype.customReduce = function(reducerfunc, initialValue){
 
   for(let i = 0; i < this.length; i++){
     if(this[i] !== null && this[i] !== undefined){
-      currentValue = reducerfunc(acc, this[i], i, this);
-      acc = currentValue;
+      acc = reducerfunc(acc, this[i], i, this); // takes accumulator, currentElement, index and Array as arguments
     }
   }
   return acc;
@@ -96,15 +94,15 @@ Array.prototype.customReduce = function(reducerfunc, initialValue){
 
 let arr = [1,3,4,6,7,,8];
 
-// console.log("OG array: ", arr + "\n");
-// console.log("Map: Squares: ", arr.ourMap(item=> item * item));
-// console.log("Filter: only odds: ", arr.customFilter(item => item % 2 === 1));
+console.log("OG array: ", arr + "\n");
+console.log("Map: Squares: ", arr.ourMap(item=> item * item));
+console.log("Filter: only odds: ", arr.customFilter(item => item % 2 === 1));
 
-// console.log("find 1st even: ", arr.customFind(item => item % 2 === 0));
+console.log("find 1st even: ", arr.customFind(item => item % 2 === 0));
 
-// let reducer = (acc, current) => acc+current;
+let reducer = (acc, current) => acc+current;
 
-// console.log("Reduce: sum: "+ arr.customReduce(reducer, 0));
+console.log("Reduce: sum: "+ arr.customReduce(reducer, 0));
 
 // let arr2 = [1,2,3];
 // let reducer2 = (acc, current) => {
