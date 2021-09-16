@@ -70,20 +70,29 @@ Array.prototype.customFind = function(testingFunc){
 */
 Array.prototype.customReduce = function(reducerfunc, initialValue){
   let acc = null;
+  let currentValueIndex = 0;
 
-  // if array length less than 1
-  if(this.length < 1){
-    throw new Error("Cannot reduce an empty array");
+  // if array has only 1 element or only initial value provided
+  if(this.length === 1){
+    return this[0];
+  }
+
+  // if array length less than 1 & no inital value
+  if(this.length < 1 && initialValue === undefined){
+    throw new TypeError("Cannot reduce an empty array");
+  }else if(this.length < 1 && initialValue){
+    return initialValue;
   }
 
   // if initialvalue not provided
   if(initialValue === undefined){
     acc = this[0]; // set first element as accumulator then
+    currentValueIndex = 1; // start loop from next element
   }else{
     acc = initialValue;
   }
 
-  for(let i = 0; i < this.length; i++){
+  for(let i = currentValueIndex; i < this.length; i++){
     if(this[i] !== null && this[i] !== undefined){
       acc = reducerfunc(acc, this[i], i, this); // takes accumulator, currentElement, index and Array as arguments
     }
